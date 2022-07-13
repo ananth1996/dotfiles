@@ -1,5 +1,7 @@
 ZSH_DISABLE_COMPFIX=true
 
+[[ -f ~/.aliases ]] && source ~/.aliases
+
 source ${HOME}/antigen.zsh
 antigen init ${HOME}/.antigenrc
 
@@ -55,4 +57,4 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 eval "$(starship init zsh)"
-
+eval "$(zoxide init zsh)"
