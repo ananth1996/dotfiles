@@ -2,7 +2,8 @@
 if [ -f /etc/bashrc ]; then
         . /etc/bashrc
 fi
-
+# source aliases 
+[[ -f ~/.aliases ]] && source ~/.aliases
 #module load tmux/2.9
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
