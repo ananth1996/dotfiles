@@ -58,3 +58,4 @@ HISTFILESIZE=10000000
 eval "$(starship init bash)"
 # source aliases 
 [ -f ~/.aliases ] && source ~/.aliases
+eval "$(zoxide init bash)"
