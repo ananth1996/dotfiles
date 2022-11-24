@@ -8,3 +8,5 @@ if [[ "$(command -v bat)" ]]; then
 	alias cat="bat -pp" #makes plain and removes paging
 	alias catp="bat --plain" #makes plain and removes paging
 fi
+
+alias slurm="squeue -M ukko2 -l -u $USER"
