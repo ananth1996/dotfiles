@@ -6,4 +6,5 @@ fi
 
 if [[ "$(command -v bat)" ]]; then
 	alias cat="bat -pp" #makes plain and removes paging
+	alias catp="bat --plain" #makes plain and removes paging
 fi
