@@ -1,6 +1,5 @@
 ZSH_DISABLE_COMPFIX=true
 
-[[ -f ~/.aliases ]] && source ~/.aliases
 
 source ${HOME}/antigen.zsh
 antigen init ${HOME}/.antigenrc
@@ -57,4 +56,9 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 eval "$(starship init zsh)"
+[[ -f ~/.aliases ]] && source ~/.aliases
 eval "$(zoxide init zsh)"
+export PATH="/Users/mahadeva/bin:$PATH"
+export PATH="/Users/mahadeva/.local/bin:$PATH"
+fpath+=~/.zfunc
+autoload -Uz compinit && compinit
