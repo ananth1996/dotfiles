@@ -43,22 +43,32 @@ source ${HOME}/.cargo/env
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/mahadeva/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/Users/mahadeva/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/Users/mahadeva/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/mahadeva/opt/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/Users/mahadeva/mambaforge/etc/profile.d/conda.sh" ]; then
+        . "/Users/mahadeva/mambaforge/etc/profile.d/conda.sh"
     else
-        export PATH="/Users/mahadeva/opt/anaconda3/bin:$PATH"
+        export PATH="/Users/mahadeva/mambaforge/bin:$PATH"
     fi
 fi
 unset __conda_setup
+
+if [ -f "/Users/mahadeva/mambaforge/etc/profile.d/mamba.sh" ]; then
+    . "/Users/mahadeva/mambaforge/etc/profile.d/mamba.sh"
+fi
 # <<< conda initialize <<<
 eval "$(starship init zsh)"
 [[ -f ~/.aliases ]] && source ~/.aliases
 eval "$(zoxide init zsh)"
+
+# add the openshift cli 
 export PATH="/Users/mahadeva/bin:$PATH"
 export PATH="/Users/mahadeva/.local/bin:$PATH"
+
 fpath+=~/.zfunc
 autoload -Uz compinit && compinit
+
+# homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"
