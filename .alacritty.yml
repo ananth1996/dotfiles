@@ -197,11 +197,11 @@ font:
 #draw_bold_text_with_bright_colors: false
 
 # Colors (Tomorrow Night)
-#colors:
+colors:
   # Default colors
-  #primary:
-  #  background: '#1d1f21'
-  #  foreground: '#c5c8c6'
+  primary:
+    background: '#000000'
+    foreground: '#ffffff'
 
     # Bright and dim foreground colors
     #
@@ -292,27 +292,28 @@ font:
   #  text: CellBackground
   #  background: CellForeground
 
+  # Theme Colors from Warp Dark https://github.com/warpdotdev/themes/blob/main/warp_bundled/warp_dark.yaml
   # Normal colors
-  #normal:
-  #  black:   '#1d1f21'
-  #  red:     '#cc6666'
-  #  green:   '#b5bd68'
-  #  yellow:  '#f0c674'
-  #  blue:    '#81a2be'
-  #  magenta: '#b294bb'
-  #  cyan:    '#8abeb7'
-  #  white:   '#c5c8c6'
+  normal:
+    black: "#616161"
+    red: "#ff8272"
+    green: "#b4fa72"
+    yellow: "#fefdc2"
+    blue: "#a5d5fe"
+    magenta: "#ff8ffd"
+    cyan: "#d0d1fe"
+    white: "#f1f1f1"
 
   # Bright colors
-  #bright:
-  #  black:   '#666666'
-  #  red:     '#d54e53'
-  #  green:   '#b9ca4a'
-  #  yellow:  '#e7c547'
-  #  blue:    '#7aa6da'
-  #  magenta: '#c397d8'
-  #  cyan:    '#70c0b1'
-  #  white:   '#eaeaea'
+  bright:
+    black: "#8e8e8e"
+    red: "#ffc4bd"
+    green: "#d6fcb9"
+    yellow: "#fefdd5"
+    blue: "#c1e3fe"
+    magenta: "#ffb1fe"
+    cyan: "#e5e6fe"
+    white: "#feffff"
 
   # Dim colors
   #
