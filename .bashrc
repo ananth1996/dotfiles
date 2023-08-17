@@ -1,3 +1,7 @@
+#PS4='+ $(date "+%s.%N")\011 '
+#exec 3>&2 2>/tmp/bashstart.$$.log
+#set -x
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
         . /etc/bashrc
@@ -48,7 +52,7 @@ shopt -s histappend
 PROMPT_COMMAND="history -a; history -n"
 
 # ignore certain commands from the history
-HISTIGNORE="ls:ll:cd:pwd:bg:fg:history"
+HISTIGNORE="ls:ll:cd:pwd:bg:fg:history:exa:bat:cat"
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=100000
@@ -56,6 +60,11 @@ HISTFILESIZE=10000000
 
 # Adds starship prompt
 eval "$(starship init bash)"
+
 # source aliases 
 [ -f ~/.aliases ] && source ~/.aliases
-eval "$(zoxide init bash)"
+
+# eval "$(zoxide init bash)"
+
+#set +x
+#exec 2>&3 3>&-
