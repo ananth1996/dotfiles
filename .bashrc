@@ -9,7 +9,8 @@ export http_proxy=http://www-cache.cs.helsinki.fi:3128
 export HTTP_PROXY=http://www-cache.cs.helsinki.fi:3128
 export HTTPS_PROXY=http://www-cache.cs.helsinki.fi:3128
 
-export MPLCONFIGDIR=/wrk/users/mahadeva/.config
+export MPLCONFIGDIR=/wrk-vakka/users/mahadeva/.config
+export WRK=/wrk-vakka/users/mahadeva
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
@@ -17,31 +18,13 @@ export MPLCONFIGDIR=/wrk/users/mahadeva/.config
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/proj/mahadeva/mambaforge/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/proj/mahadeva/mambaforge/etc/profile.d/conda.sh" ]; then
-        . "/proj/mahadeva/mambaforge/etc/profile.d/conda.sh"
-    else
-        export PATH="/proj/mahadeva/mambaforge/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-
-if [ -f "/proj/mahadeva/mambaforge/etc/profile.d/mamba.sh" ]; then
-    . "/proj/mahadeva/mambaforge/etc/profile.d/mamba.sh"
-fi
-# <<< conda initialize <<<
-
 # load rust
-. "/proj/mahadeva/.cargo/env"
+. "${HOME}/proj/.cargo/env"
 # rust variables
+export PROJ=$HOME/proj
 export RUSTUP_HOME=$PROJ/.rustup
 export CARGO_HOME=$PROJ/.cargo
-source /proj/mahadeva/.cargo/env
+source $HOME/proj/.cargo/env
 
 # fzf settings
 export FD_OPTIONS="--exclude .jupyterhub-tree --exclude .vscode-server --exclude .git"
@@ -87,3 +70,23 @@ eval "$(starship init bash)"
 # source aliases 
 [ -f ~/.aliases ] && source ~/.aliases
 eval "$(zoxide init bash)"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/mahadeva/mambaforge/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/mahadeva/mambaforge/etc/profile.d/conda.sh" ]; then
+        . "/home/mahadeva/mambaforge/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/mahadeva/mambaforge/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+
+if [ -f "/home/mahadeva/mambaforge/etc/profile.d/mamba.sh" ]; then
+    . "/home/mahadeva/mambaforge/etc/profile.d/mamba.sh"
+fi
+# <<< conda initialize <<<
+
