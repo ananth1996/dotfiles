@@ -1,13 +1,31 @@
-zmodload zsh/zprof
+# zmodload zsh/zprof
 ZSH_DISABLE_COMPFIX=true
 
+fpath+=~/.zfunc
+autoload -Uz compinit && compinit
 # Mac Key Binding 
 [[ -f ~/.mac_key_bindings ]] && source ~/.mac_key_bindings
 
 [[ -e ${ZDOTDIR:-~}/.antidote ]] ||
   git clone https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antidote
-source ${ZDOTDIR:-~}/.antidote/antidote.zsh
-antidote load
+#source ${ZDOTDIR:-~}/.antidote/antidote.zsh
+# antidote load
+zsh_plugins=${ZDOTDIR:-~}/.zsh_plugins.zsh
+
+# Ensure you have a .zsh_plugins.txt file where you can add plugins.
+[[ -f ${zsh_plugins:r}.txt ]] || touch ${zsh_plugins:r}.txt
+
+# Lazy-load antidote.
+fpath+=(${ZDOTDIR:-~}/.antidote)
+autoload -Uz $fpath[-1]/antidote
+
+# Generate static file in a subshell when .zsh_plugins.txt is updated.
+if [[ ! $zsh_plugins -nt ${zsh_plugins:r}.txt ]]; then
+  (antidote bundle <${zsh_plugins:r}.txt >|$zsh_plugins)
+fi
+
+# Source your static plugins file.
+source $zsh_plugins
 # fzf settings
 
 # # Use fd (https://github.com/sharkdp/fd) instead of the default find
@@ -75,6 +93,4 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 17)
 # export KUBECONFIG=~/.kube/mlops_config
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
-fpath+=~/.zfunc
-autoload -Uz compinit && compinit
-zprof
+# zprof

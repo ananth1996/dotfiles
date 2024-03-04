@@ -1,0 +1,13 @@
+# Load the oh-my-zsh's library
+# ohmyzsh/ohmyzsh path:lib
+ohmyzsh/ohmyzsh path:plugins/git
+ohmyzsh/ohmyzsh path:plugins/macos
+# Syntax highlighting bundle.
+zsh-users/zsh-syntax-highlighting
+
+# Fish-like auto suggestions
+zsh-users/zsh-autosuggestions
+
+# Extra zsh completions
+zsh-users/zsh-completions
+
