@@ -1,9 +1,13 @@
+zmodload zsh/zprof
 ZSH_DISABLE_COMPFIX=true
 
+# Mac Key Binding 
+[[ -f ~/.mac_key_bindings ]] && source ~/.mac_key_bindings
 
-source ${HOME}/antigen.zsh
-antigen init ${HOME}/.antigenrc
-
+[[ -e ${ZDOTDIR:-~}/.antidote ]] ||
+  git clone https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antidote
+source ${ZDOTDIR:-~}/.antidote/antidote.zsh
+antidote load
 # fzf settings
 
 # # Use fd (https://github.com/sharkdp/fd) instead of the default find
@@ -26,8 +30,6 @@ export FZF_CTRL_T_OPTS="--preview='[[ \$(file --mime {}) =~ binary ]] && echo {}
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 PATH="/Users/mahadeva/perl5/bin${PATH:+:${PATH}}"; export PATH;
 PERL5LIB="/Users/mahadeva/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
@@ -35,30 +37,14 @@ PERL_LOCAL_LIB_ROOT="/Users/mahadeva/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_L
 PERL_MB_OPT="--install_base \"/Users/mahadeva/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/mahadeva/perl5"; export PERL_MM_OPT;
 
-# iterm shell integration for ssh stuff
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
 # Activate cargo for rust
 source ${HOME}/.cargo/env
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/mahadeva/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/mahadeva/mambaforge/etc/profile.d/conda.sh" ]; then
-        . "/Users/mahadeva/mambaforge/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/mahadeva/mambaforge/bin:$PATH"
-    fi
-fi
-unset __conda_setup
 
 if [ -f "/Users/mahadeva/mambaforge/etc/profile.d/mamba.sh" ]; then
     . "/Users/mahadeva/mambaforge/etc/profile.d/mamba.sh"
 fi
 # <<< conda initialize <<<
+# export STARSHIP_LOG=trace starship timings
 eval "$(starship init zsh)"
 [[ -f ~/.aliases ]] && source ~/.aliases
 eval "$(zoxide init zsh)"
@@ -67,8 +53,28 @@ eval "$(zoxide init zsh)"
 export PATH="/Users/mahadeva/bin:$PATH"
 export PATH="/Users/mahadeva/.local/bin:$PATH"
 
-fpath+=~/.zfunc
-autoload -Uz compinit && compinit
-
 # homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# java 
+#export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+export JAVA_HOME=$(/usr/libexec/java_home -v 17) 
+#export JAVA_OPTS='--add-exports java.base/sun.nio.ch=ALL-UNNAMED'
+
+#export HADOOP_HOME=${HOME}/hadoop-3.3.6/              
+#export HADOOP_INSTALL=$HADOOP_HOME
+#export HADOOP_MAPRED_HOME=$HADOOP_HOME
+#export HADOOP_COMMON_HOME=$HADOOP_HOME
+#export HADOOP_HDFS_HOME=$HADOOP_HOME
+#export YARN_HOME=$HADOOP_HOME
+#export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+#export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+#export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/nativ"
+#export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native
+
+# export KUBECONFIG=~/.kube/mlops_config
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
+fpath+=~/.zfunc
+autoload -Uz compinit && compinit
+zprof

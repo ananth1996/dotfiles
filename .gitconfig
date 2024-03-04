@@ -18,3 +18,5 @@
 
 [diff]
     colorMoved = default
+[pull]
+	rebase = false
