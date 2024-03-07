@@ -1,9 +1,12 @@
-if [ "$(command -v exa)" ]; then
-	alias ls=exa
-	alias l="exa -1"
-	alias la="exa -al"
+if [ "$(command -v eza)" ]; then
+	alias ls="eza --highlight"
+	alias l="eza --highlight -1"
+	alias la="eza --highlight -al"
 fi
 
+if [ "$(command -v rg)" ]; then
+    alias rg="rg --hyperlink-format=kitty" #adds highlights for kitty 
+fi
 if [[ "$(command -v bat)" ]]; then
 	alias cat="bat -pp" #makes plain and removes paging
 	alias catp="bat --plain" #makes plain and removes paging
