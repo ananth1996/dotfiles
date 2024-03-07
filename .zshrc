@@ -95,4 +95,10 @@ export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/b
 
 # If using kitty terminal then ensure that ssh works correctly
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
+
+# jump words more effectively
+# https://apple.stackexchange.com/questions/463712/is-there-a-way-to-jump-within-a-word-using-option-with-arrow-keys-in-iterm2
+export WORDCHARS='*_-.[]~;!$%^(){}<>'
+autoload -Uz select-word-style
+select-word-style normal
 # zprof
