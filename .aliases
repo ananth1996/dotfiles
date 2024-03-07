@@ -1,10 +1,17 @@
-#if [ "$(command -v exa)" ]; then
-#	alias ls=exa
-#	alias l="exa -1"
-#	alias la="exa -al"
-#fi
+if [ "$(command -v eza)" ]; then
+	alias ls="eza --hyperlink"
+	alias l="eza --hyperlink -1"
+	alias la="eza --hyperlink -al"
+fi
 
+if [ "$(command -v rg)" ]; then
+    alias rg="rg --hyperlink-format=kitty" #adds hyperlinks for kitty 
+fi
 if [[ "$(command -v bat)" ]]; then
 	alias cat="bat -pp" #makes plain and removes paging
 	alias catp="bat --plain" #makes plain and removes paging
+fi
+
+if [ "$(command -v open)" ]; then
+    alias ofd='open -R "${PWD}"' # open finder
 fi
