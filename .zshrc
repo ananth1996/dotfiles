@@ -93,4 +93,6 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 17)
 # export KUBECONFIG=~/.kube/mlops_config
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
+# If using kitty terminal then ensure that ssh works correctly
+[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 # zprof
