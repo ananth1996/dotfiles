@@ -6,3 +6,12 @@ disabled = true
 
 [docker_context]
 disabled = true
+
+[python]
+python_binary = []
+
+[git_status]
+disabled = true
+
+[package]
+diabled = true

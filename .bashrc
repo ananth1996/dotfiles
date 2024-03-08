@@ -64,7 +64,7 @@ eval "$(starship init bash)"
 # source aliases 
 [ -f ~/.aliases ] && source ~/.aliases
 
-# eval "$(zoxide init bash)"
+eval "$(zoxide init bash)"
 
 #set +x
 #exec 2>&3 3>&-

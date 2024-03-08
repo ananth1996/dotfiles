@@ -15,3 +15,17 @@ fi
 if [ "$(command -v open)" ]; then
     alias ofd='open -R "${PWD}"' # open finder
 fi
+
+if [ "$(command -v git)" ]; then
+    alias g='git'
+    alias gst='git status'
+    alias ga='git add'
+    alias gaa='git add --all'
+    alias gcmsg='git commit --message'
+    alias gd='git diff'
+    alias gdca='git diff --cached'
+    alias gdcw='git diff --cached --word-diff'
+    alias gds='git diff --staged'
+    alias gdw='git diff --word-diff'
+    alias gc='git commit -v'
+fi
