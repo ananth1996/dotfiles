@@ -1,0 +1,117 @@
+#!/bin/bash
+#############################################
+# DOTFILES - Shell Configuration
+# Compatible with: bash, zsh
+#############################################
+
+# SFS paths (shared file system - persists across instances)
+export SFS_DIR="/mnt/SFS-Ananth"
+export LOCAL_BIN="$SFS_DIR/local/bin"
+export CARGO_HOME="$SFS_DIR/local/cargo"
+export RUSTUP_HOME="$SFS_DIR/local/rustup"
+
+#############################################
+# PATH
+#############################################
+
+# Add SFS-installed tools to PATH
+export PATH="$LOCAL_BIN:$CARGO_HOME/bin:$PATH"
+
+# Add local bin
+export PATH="$HOME/.local/bin:$PATH"
+
+# Add fzf
+export PATH="$HOME/.fzf/bin:$PATH"
+
+#############################################
+# TOOL INITIALIZATION
+#############################################
+
+# Starship prompt (if installed)
+if command -v starship &> /dev/null; then
+    eval "$(starship init bash 2>/dev/null || starship init zsh 2>/dev/null)"
+fi
+
+# Zoxide (smarter cd)
+if command -v zoxide &> /dev/null; then
+    eval "$(zoxide init bash 2>/dev/null || zoxide init zsh 2>/dev/null)"
+fi
+
+# Direnv (directory-specific environment variables)
+if command -v direnv &> /dev/null; then
+    eval "$(direnv hook bash 2>/dev/null || direnv hook zsh 2>/dev/null)"
+fi
+
+# FZF
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# FZF configuration
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+if command -v fd &> /dev/null; then
+    export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+fi
+
+#############################################
+# HISTORY
+#############################################
+
+export HISTSIZE=50000
+export HISTFILESIZE=50000
+export HISTCONTROL=ignoreboth:erasedups
+
+# Append to history, don't overwrite
+shopt -s histappend 2>/dev/null
+
+#############################################
+# EDITOR
+#############################################
+
+if command -v nvim &> /dev/null; then
+    export EDITOR="nvim"
+    export VISUAL="nvim"
+elif command -v vim &> /dev/null; then
+    export EDITOR="vim"
+    export VISUAL="vim"
+else
+    export EDITOR="nano"
+    export VISUAL="nano"
+fi
+
+#############################################
+# ALIASES
+#############################################
+
+[ -f ~/.aliases ] && source ~/.aliases
+
+#############################################
+# GPU / CUDA
+#############################################
+
+# Common CUDA paths (adjust if needed)
+if [[ -d /usr/local/cuda ]]; then
+    export CUDA_HOME=/usr/local/cuda
+    export PATH=$CUDA_HOME/bin:$PATH
+    export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+fi
+
+# Quick GPU status
+alias gpus='nvidia-smi'
+alias gpu-watch='watch -n 1 nvidia-smi'
+
+#############################################
+# COMPLETIONS
+#############################################
+
+# Load custom completions from dotfiles
+for f in "$SFS_DIR/dotfiles/config/completions"/*.bash; do
+    [ -f "$f" ] && source "$f"
+done
+
+#############################################
+# LOCAL OVERRIDES
+#############################################
+
+# Source local machine-specific config if exists
+[ -f ~/.bashrc_local ] && source ~/.bashrc_local

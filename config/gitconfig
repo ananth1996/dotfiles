@@ -1,0 +1,23 @@
+# Git Configuration
+# This file is symlinked to ~/.gitconfig_dotfiles
+# Include it in your main ~/.gitconfig with:
+#   [include]
+#       path = ~/.gitconfig_dotfiles
+[color]
+        ui = auto
+[core]
+     pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true  # use n and N to move between diff sections
+    side-by-side = true
+    hyperlinks = true
+    hyperlinks-file-link-format="file://{path}#{line}" # kitty format
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default

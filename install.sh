@@ -1,25 +1,22 @@
 #!/bin/bash
 
+#############################################
+# DOTFILES INSTALLER - Auto-detect OS
+#############################################
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-##############
-# FZF
-##############
-
-if [[ ! -f $HOME/.fzf/bin/fzf ]]; then
-    git clone https://github.com/junegunn/fzf.git $HOME/.fzf
-    yes | $HOME/.fzf/install
-fi
-
-###############
-# RUST
-##############
-
-if [[ ! -d $HOME/.rustup ]]; then
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-fi
-
-for crate in bat fd-find ripgrep eza du-dust ripgrep git-delta starship zoxide hyperfine
-do
-    $HOME/.cargo/bin/cargo install $crate
-done
+case "$(uname -s)" in
+    Linux*)
+        echo "Detected Linux - running install-linux.sh"
+        exec "$SCRIPT_DIR/install-linux.sh" "$@"
+        ;;
+    Darwin*)
+        echo "Detected macOS - running install-mac.sh"
+        exec "$SCRIPT_DIR/install-mac.sh" "$@"
+        ;;
+    *)
+        echo "Unknown OS: $(uname -s)"
+        exit 1
+        ;;
+esac

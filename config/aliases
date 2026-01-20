@@ -1,0 +1,116 @@
+#!/bin/bash
+#############################################
+# ALIASES
+# Common aliases using modern CLI tools
+#############################################
+
+#############################################
+# MODERN REPLACEMENTS
+#############################################
+
+# bat - better cat
+if command -v bat &> /dev/null; then
+    alias cat='bat --paging=never'
+    alias catp='bat'  # with paging
+fi
+
+# eza - better ls (fork of exa)
+if command -v eza &> /dev/null; then
+    alias ls='eza'
+    alias ll='eza -la --git'
+    alias la='eza -a'
+    alias lt='eza --tree'
+    alias l='eza -l'
+else
+    alias ll='ls -la'
+    alias la='ls -a'
+    alias l='ls -l'
+fi
+
+# fd - better find
+if command -v fd &> /dev/null; then
+    alias find='fd'
+fi
+
+# ripgrep - better grep
+if command -v rg &> /dev/null; then
+    alias grep='rg'
+fi
+
+
+#############################################
+# NAVIGATION
+#############################################
+
+# Quick access to SFS
+alias sfs='cd /mnt/SFS-Ananth'
+
+#############################################
+# GIT
+#############################################
+
+alias g='git'
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git pull'
+alias gd='git diff'
+alias gco='git checkout'
+alias gb='git branch'
+alias glog='git log --oneline --graph --decorate'
+
+#############################################
+# SAFETY
+#############################################
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+#############################################
+# MISC
+#############################################
+
+# Quick edit config
+alias erc='$EDITOR ~/.bashrc'
+alias src='source ~/.bashrc'
+
+# Disk usage summary
+alias duh='du -sh * | sort -h'
+
+#############################################
+# PYTHON
+#############################################
+
+alias activate='source .venv/bin/activate'
+
+#############################################
+# DOCKER
+#############################################
+
+alias dk='docker'
+alias dkc='docker-compose'
+alias dkps='docker ps'
+alias dkimg='docker images'
+
+#############################################
+# FZF ENHANCED
+#############################################
+
+# Fuzzy cd to recent directory (requires zoxide)
+fcd() {
+    local dir
+    dir=$(zoxide query -l | fzf --height 40% --reverse) && cd "$dir"
+}
+
+# Fuzzy git log
+fgl() {
+    git log --oneline --color=always | fzf --ansi --preview 'git show --color=always {1}'
+}
+
+# Fuzzy find and edit
+fe() {
+    local file
+    file=$(fzf --preview 'bat --color=always {}') && $EDITOR "$file"
+}
