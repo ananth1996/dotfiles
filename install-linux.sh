@@ -10,8 +10,8 @@ set -e
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Use SFS for persistent tool installations (survives instance changes)
-# Change this if your SFS mount point is different
-SFS_DIR="/mnt/SFS-Ananth"
+# Override by running: SFS_DIR=/path/to/mount ./install.sh
+SFS_DIR="${SFS_DIR:-/mnt/SFS-Ananth}"
 LOCAL_BIN="$SFS_DIR/local/bin"
 CARGO_HOME="$SFS_DIR/local/cargo"
 RUSTUP_HOME="$SFS_DIR/local/rustup"
@@ -46,10 +46,10 @@ preflight_checks() {
         exit 1
     fi
     
-    # Detect distro
+    # Detect distro. Read in a subshell so os-release doesn't set ID, NAME,
+    # VERSION and friends in our own scope.
     if [[ -f /etc/os-release ]]; then
-        . /etc/os-release
-        DISTRO="$ID"
+        DISTRO="$(. /etc/os-release && echo "$ID")"
     fi
     
     info "Detected: Linux ${DISTRO:+($DISTRO)}"
@@ -73,9 +73,19 @@ install_system_packages() {
         libssl-dev
     )
     
+    if ! command -v apt-get &> /dev/null; then
+        warn "apt-get not found${DISTRO:+ (detected $DISTRO)} - skipping system packages"
+        warn "Install these with your package manager: ${packages[*]}"
+        return
+    fi
+
     if command -v sudo &> /dev/null && sudo -n true 2>/dev/null; then
         sudo apt-get update -qq
         sudo apt-get install -y -qq "${packages[@]}"
+        success "System packages installed"
+    elif [[ "$(id -u)" -eq 0 ]]; then
+        apt-get update -qq
+        apt-get install -y -qq "${packages[@]}"
         success "System packages installed"
     else
         warn "No sudo access - skipping system packages"
@@ -137,21 +147,26 @@ install_cargo_tools() {
     export RUSTUP_HOME="$RUSTUP_HOME"
     export PATH="$CARGO_HOME/bin:$PATH"
     
+    # crate:binary - the binary name often differs from the crate name, so we
+    # can't derive one from the other.
     local crates=(
-        bat           # Better cat with syntax highlighting
-        fd-find       # Better find
-        ripgrep       # Better grep
-        eza           # Better ls (fork of exa)
-        du-dust       # Better du (disk usage)
-        git-delta     # Better git diff
-        starship      # Cross-shell prompt
-        zoxide        # Smarter cd
-        hyperfine     # Benchmarking tool
+        bat:bat             # Better cat with syntax highlighting
+        fd-find:fd          # Better find
+        ripgrep:rg          # Better grep
+        eza:eza             # Better ls (fork of exa)
+        du-dust:dust        # Better du (disk usage)
+        git-delta:delta     # Better git diff
+        starship:starship   # Cross-shell prompt
+        zoxide:zoxide       # Smarter cd
+        hyperfine:hyperfine # Benchmarking tool
     )
-    
+
     info "Installing Cargo tools to SFS..."
-    for crate in "${crates[@]}"; do
-        if [[ -f "$CARGO_HOME/bin/${crate%%-*}" ]] || [[ -f "$CARGO_HOME/bin/$crate" ]]; then
+    for entry in "${crates[@]}"; do
+        local crate="${entry%%:*}"
+        local binary="${entry##*:}"
+
+        if [[ -f "$CARGO_HOME/bin/$binary" ]]; then
             success "$crate already installed"
         else
             info "Installing $crate..."
@@ -206,7 +221,12 @@ link_dotfiles() {
         
         if [[ -f "$src" ]]; then
             mkdir -p "$(dirname "$dst")"
-            ln -sf "$src" "$dst"
+            # Don't clobber a real file someone put there by hand.
+            if [[ -f "$dst" && ! -L "$dst" ]]; then
+                mv "$dst" "$dst.backup"
+                warn "Backed up existing $dst to $dst.backup"
+            fi
+            ln -sfn "$src" "$dst"
             success "Linked $dst"
         fi
     done

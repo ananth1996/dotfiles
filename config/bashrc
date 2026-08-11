@@ -4,11 +4,33 @@
 # Compatible with: bash, zsh
 #############################################
 
+# Which shell are we in? Used to pick the right init output below.
+if [ -n "$ZSH_VERSION" ]; then
+    DOTFILES_SHELL="zsh"
+else
+    DOTFILES_SHELL="bash"
+fi
+
 # SFS paths (shared file system - persists across instances)
-export SFS_DIR="/mnt/SFS-Ananth"
+# Override SFS_DIR before sourcing this file if your mount point differs.
+export SFS_DIR="${SFS_DIR:-/mnt/SFS-Ananth}"
 export LOCAL_BIN="$SFS_DIR/local/bin"
 export CARGO_HOME="$SFS_DIR/local/cargo"
 export RUSTUP_HOME="$SFS_DIR/local/rustup"
+
+# Where this repo lives. Resolved through the ~/.bashrc_dotfiles symlink so it
+# works wherever the repo is checked out, not just on the SFS.
+if [ -z "$DOTFILES_DIR" ]; then
+    _dotfiles_self="${BASH_SOURCE[0]:-$0}"
+    _dotfiles_self="$(readlink -f "$_dotfiles_self" 2>/dev/null)"
+    if [ -n "$_dotfiles_self" ]; then
+        DOTFILES_DIR="$(cd "$(dirname "$_dotfiles_self")/.." && pwd)"
+    else
+        DOTFILES_DIR="$SFS_DIR/dotfiles"
+    fi
+    unset _dotfiles_self
+fi
+export DOTFILES_DIR
 
 #############################################
 # PATH
@@ -29,17 +51,17 @@ export PATH="$HOME/.fzf/bin:$PATH"
 
 # Starship prompt (if installed)
 if command -v starship &> /dev/null; then
-    eval "$(starship init bash 2>/dev/null || starship init zsh 2>/dev/null)"
+    eval "$(starship init $DOTFILES_SHELL)"
 fi
 
 # Zoxide (smarter cd)
 if command -v zoxide &> /dev/null; then
-    eval "$(zoxide init bash 2>/dev/null || zoxide init zsh 2>/dev/null)"
+    eval "$(zoxide init $DOTFILES_SHELL)"
 fi
 
 # Direnv (directory-specific environment variables)
 if command -v direnv &> /dev/null; then
-    eval "$(direnv hook bash 2>/dev/null || direnv hook zsh 2>/dev/null)"
+    eval "$(direnv hook $DOTFILES_SHELL)"
 fi
 
 # FZF
@@ -104,10 +126,13 @@ alias gpu-watch='watch -n 1 nvidia-smi'
 # COMPLETIONS
 #############################################
 
-# Load custom completions from dotfiles
-for f in "$SFS_DIR/dotfiles/config/completions"/*.bash; do
-    [ -f "$f" ] && source "$f"
-done
+# Load custom completions from dotfiles. These use the `complete` builtin, so
+# they are bash-only; zsh would error on them.
+if [ "$DOTFILES_SHELL" = "bash" ] && [ -d "$DOTFILES_DIR/config/completions" ]; then
+    for f in "$DOTFILES_DIR/config/completions"/*.bash; do
+        [ -f "$f" ] && source "$f"
+    done
+fi
 
 #############################################
 # LOCAL OVERRIDES

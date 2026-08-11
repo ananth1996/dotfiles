@@ -38,19 +38,28 @@ source ~/.bashrc
 
 - `~/.bashrc_dotfiles` - Shell configuration (PATH, tool init)
 - `~/.aliases` - Modern command aliases
-- `~/.config/starship.toml` - Prompt configuration
 - `~/.gitconfig_dotfiles` - Git aliases and delta integration
+
+Note that `~/.gitconfig_dotfiles` is not picked up on its own. Add this to your
+`~/.gitconfig`:
+
+```ini
+[include]
+    path = ~/.gitconfig_dotfiles
+```
 
 ## Directory Structure
 
 ```
 dotfiles/
-├── install.sh              # Main installer
+├── install.sh              # Entry point, detects OS
+├── install-linux.sh        # Linux/SFS setup
+├── install-mac.sh          # macOS setup
 ├── config/
 │   ├── bashrc              # Shell configuration
 │   ├── aliases             # Command aliases
-│   ├── starship.toml       # Prompt config
-│   └── gitconfig           # Git config
+│   ├── gitconfig           # Git config
+│   └── completions/        # Bash completion scripts
 └── README.md
 ```
 
@@ -103,9 +112,21 @@ alias myproject="cd /path/to/project"
 
 ### Modify SFS Path
 
-If your SFS is mounted elsewhere, update these variables in:
-- `install.sh`: `SFS_DIR`
-- `config/bashrc`: `SFS_DIR`
+Both the installer and the shell config read `SFS_DIR` from the environment and
+fall back to `/mnt/SFS-Ananth`. To use a different mount:
+
+```bash
+SFS_DIR=/mnt/my-mount ./install.sh
+```
+
+Your shell needs the same value. `~/.bashrc_local` is sourced at the end, which
+is too late to affect `PATH`, so export it in `~/.bashrc` above the
+`source ~/.bashrc_dotfiles` line instead:
+
+```bash
+export SFS_DIR=/mnt/my-mount
+[ -f ~/.bashrc_dotfiles ] && source ~/.bashrc_dotfiles
+```
 
 ## Useful Aliases
 
@@ -114,7 +135,7 @@ If your SFS is mounted elsewhere, update these variables in:
 cat file.txt      # Uses bat
 ls                # Uses eza with icons
 grep pattern      # Uses ripgrep
-find -name "*.py" # Uses fd
+find "\.py$"      # Uses fd, so it takes a regex rather than -name
 
 # Navigation
 sfs               # cd to /mnt/SFS-Ananth

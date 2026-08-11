@@ -42,8 +42,12 @@ fi
 # NAVIGATION
 #############################################
 
-# Quick access to SFS
-alias sfs='cd /mnt/SFS-Ananth'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+# Quick access to SFS (SFS_DIR is set in config/bashrc)
+alias sfs='cd "${SFS_DIR:-/mnt/SFS-Ananth}"'
 
 #############################################
 # GIT

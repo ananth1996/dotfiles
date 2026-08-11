@@ -42,10 +42,15 @@ fi
 
 source "$HOME/.cargo/env"
 
+# crate:binary - the binary name often differs from the crate name, so we
+# can't derive one from the other.
 info "Installing Cargo tools..."
-for crate in bat fd-find ripgrep eza du-dust git-delta starship zoxide hyperfine
+for entry in bat:bat fd-find:fd ripgrep:rg eza:eza du-dust:dust git-delta:delta starship:starship zoxide:zoxide hyperfine:hyperfine
 do
-    if [[ -f "$HOME/.cargo/bin/${crate%%-*}" ]] || [[ -f "$HOME/.cargo/bin/$crate" ]]; then
+    crate="${entry%%:*}"
+    binary="${entry##*:}"
+
+    if [[ -f "$HOME/.cargo/bin/$binary" ]]; then
         success "$crate already installed"
     else
         info "Installing $crate..."
