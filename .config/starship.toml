@@ -1,0 +1,38 @@
+[kubernetes]
+format = '[ $context](green) '
+disabled = false
+
+[[claude_context.display]]
+threshold = 0
+style = "bold green"
+
+[[claude_context.display]]
+threshold = 50
+style = "bold yellow"
+
+[[claude_context.display]]
+threshold = 75
+style = "bold #ff8700"
+
+[[claude_context.display]]
+threshold = 90
+style = "bold red"
+
+[[claude_cost.display]]
+threshold = 0
+style = "bold green"
+
+[[claude_cost.display]]
+threshold = 1
+style = "bold yellow"
+
+[[claude_cost.display]]
+threshold = 5
+style = "bold red"
+
+[profiles]
+claude-code = "$kubernetes$directory$git_branch$git_status$claude_model$claude_context$claude_cost"
+
+[claude_context]
+format = "[$gauge $percentage]($style) "
+gauge_width = 10
