@@ -48,50 +48,14 @@ export FZF_CTRL_T_OPTS="--preview='[[ \$(file --mime {}) =~ binary ]] && echo {}
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-
-PATH="/Users/mahadeva/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/Users/mahadeva/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/Users/mahadeva/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/Users/mahadeva/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/Users/mahadeva/perl5"; export PERL_MM_OPT;
-
-# Activate cargo for rust
-source ${HOME}/.cargo/env
-
-if [ -f "/Users/mahadeva/mambaforge/etc/profile.d/mamba.sh" ]; then
-    . "/Users/mahadeva/mambaforge/etc/profile.d/mamba.sh"
-fi
-# <<< conda initialize <<<
 # export STARSHIP_LOG=trace starship timings
 eval "$(starship init zsh)"
+
 [[ -f ~/.aliases ]] && source ~/.aliases
 eval "$(zoxide init zsh)"
 
-# add the openshift cli 
-export PATH="/Users/mahadeva/bin:$PATH"
-export PATH="/Users/mahadeva/.local/bin:$PATH"
-
 # homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
-
-# java 
-#export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
-export JAVA_HOME=$(/usr/libexec/java_home -v 17) 
-#export JAVA_OPTS='--add-exports java.base/sun.nio.ch=ALL-UNNAMED'
-
-#export HADOOP_HOME=${HOME}/hadoop-3.3.6/              
-#export HADOOP_INSTALL=$HADOOP_HOME
-#export HADOOP_MAPRED_HOME=$HADOOP_HOME
-#export HADOOP_COMMON_HOME=$HADOOP_HOME
-#export HADOOP_HDFS_HOME=$HADOOP_HOME
-#export YARN_HOME=$HADOOP_HOME
-#export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
-#export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
-#export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/nativ"
-#export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native
-
-# export KUBECONFIG=~/.kube/mlops_config
-export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
 # If using kitty terminal then ensure that ssh works correctly
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
