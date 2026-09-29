@@ -58,11 +58,23 @@ eval "$(zoxide init zsh)"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # If using kitty terminal then ensure that ssh works correctly
-[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
+#[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
 # jump words more effectively
 # https://apple.stackexchange.com/questions/463712/is-there-a-way-to-jump-within-a-word-using-option-with-arrow-keys-in-iterm2
 export WORDCHARS='*_-.[]~;!$%^(){}<>'
 autoload -Uz select-word-style
 select-word-style normal
+export PATH="$HOME/go/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+# Export all config-* kube configs
+export KUBECONFIG=$(find ~/.kube -maxdepth 1 -name 'config*' -type f | tr '\n' ':')
 # zprof
+
+. "$HOME/.cargo/env"
+
+# kimi-code
+export PATH="/Users/ananthmahadevan/.kimi-code/bin:$PATH"
+
+# direnv 
+eval "$(direnv hook zsh)"
