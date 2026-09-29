@@ -1,0 +1,7 @@
+new_os_window k9s
+os_window_title k9s
+layout vertical
+launch --title "llm-inference-prod-euc1" zsh -ic "k9s --context llm-inference-prod-euc1"
+launch --title "llm-inference-prod-fin03" zsh -ic "k9s --context llm-inference-prod-fin03"
+launch --title "llm-inference-staging-fin03" zsh -ic "k9s --context llm-inference-staging-fin03"
+launch --title "ml-staging" zsh -ic "k9s --context ml-staging"
